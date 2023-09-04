@@ -1,7 +1,8 @@
 
 source('global.R')
 source('server.R')
-source('ocslib.R')
+source('libs/ocslib.R')
+source('ui/ui_lib.R', local = TRUE)
 
 
 # UI SCRIPT
@@ -11,96 +12,8 @@ source('ocslib.R')
 #--------------HEADER SECTION-------------------------------------------------------------------------------------------
 appHeader <- dashboardHeader(title='OptSel-Breeding')
 
-
 #--------------SIDEBAR SECTION------------------------------------------------------------------------------------------
-appSidebar <- dashboardSidebar(
-  width="300px",
-  sidebarMenu(
-    menuItem(tabName="Workspace", text="Workspace",  icon=icon("home")),
-    div(style="padding-left:20px;",
-        hr(),
-        fileInput("RawPedUpload", "Upload Pedigree file:",accept=c(".csv", ".txt", ".rds")),
-        fileInput("RawPhenUpload", "Upload Phenotype file:",accept=c(".csv", ".txt", ".rds")),
-        actionButton("clearDB", "Clear database", width='100px', class='floating-button'),
-    ),
-  
-    menuItem(tabName="BreedingPlan", text="Breeding Plans", icon=icon("th")),
-    div(
-        hr(),
-        style="padding-left:20px",
-        actionButton("btnPlanA", "Plan A", width='100px', class='floating-button'),
-        actionButton("btnPlanB", "Plan B", width='100px', class='floating-button'),
-        actionButton("btnPlanC", "Plan C", width='100px', class='floating-button')
-    ),
-
-    hr(),
-    div(
-      style="padding-left:20px",
-      h4("OPTISEL official doc."),
-      actionButton(inputId='PedOCSdoc',label="1. Pedigree OCS",icon=icon("book"), onclick=PedOCSdoc)),
-    div(style="padding-left:20px",
-      actionButton(inputId='MarkerOCSdoc',label="2. Marker OCS",icon=icon("book"), onclick=MarkerOCSdoc)),
-    div(style="padding-left:20px",
-        actionButton(inputId='OCSdoc',label="3. OCS",icon=icon("book"), onclick=OCSdoc))
-
-
-  # actionButton(inputId='ab2', label='Upload'),
-  # actionButton(
-  #   inputId='Work',
-  #   label="Learn More",
-  #   icon=icon("th"),
-  #   onclick=helplink
-  # )
-  ))
-
-
-
-# grid2cols = "
-# display:grid; 
-# grid-template-columns: 50% 50%; 
-# grid-gap: 0px; 
-# background-color=#ccc; 
-# padding: 0px;
-# margin: 0px;
-# text-align: left;
-# "
-
-divFormat0 = "
-display: contents; 
-margin: 0px;
-padding: 2px;
-min-height: 60px;
-font-weight: bold;
-text-align: center;
-border: 3px solid green;
-"
-# color:#fff;
-# background: #014d4e;
-
-divFormat1 = "
-display: contents; 
-margin: 0px;
-padding: 2px;
-"
-# color: white;
-# background: #019799;
-
-  
-divFormat2 = "
-display: inline-block; 
-min-width: 7%; 
-max-width: 10.0%;
-max-height: 60px;
-margin: 0px;
-padding: 0px;
-"
-# background: lightblue;
-# min-width: 25%; 
-# max-width: 25.0%;
-
-
-custom_box_style="width: 100%; background-color:#13395d;padding:4px;color:white"
-
+source('ui/ui_sidebar.R', local=TRUE)
 
 #--------------BODY SECTION---------------------------------------------------------------------------------------------
 appBody <- dashboardBody(
@@ -141,180 +54,14 @@ appBody <- dashboardBody(
         id="allTabs",
         type = "tabs",
         tabPanel(
-          #---- First-Tab UI components --------------------------------------------------------------------------------
-          "STEPS",
-          
-          #---- Top section ----
-          fluidRow(
-            column(
-              2,
-              div(style=divFormat0, h4("Prepare pedigree")),
-              div(width=NULL, style=divFormat1, selectizeInput("preped_keep", "keep", choices=NULL, width = '95%')),
-              div(style=divFormat1, sliderInput("preped_slider","born [RawPed] ", min = born_minmax[1], max = born_minmax[2],
-                                                value = born_slider_init_range, step = 1, width="95%", sep="")),
-              
-              div(style=divFormat1, selectizeInput("preped_breed", "thisBreed", choices=NULL, width = '95%')),
-              
-              fluidRow(
-                column(6,
-                  checkboxInput("enable_preped_lastNative", tags$b("lastNative"), width="100%")),
-                column(6,
-                  numericInput("preped_lastNative", "Born", value=1970, width="85%")),
-              ),
-              div(style=divFormat1, selectInput("preped_addnum", "addNum", choices=c("FALSE", "TRUE"), width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_preped", label = "Prepare", class = "custom-button"),
-                  actionButton(inputId = "btn_preped_view", label = "", icon=icon('search'),class = "custom-button"))
-            ),
+            #---- First-Tab UI components --------------------------------------------------------------------------------
+            "STEPS",
+            source("ui/ui_stepstab_top.R", local=TRUE),
+            
+            #---- Middle section ----
+            tags$hr(style = "border: 1px solid #eafefe; margin: 20px 0;"),
+            source("ui/ui_stepstab_bottom.R", local=TRUE)
 
-            column(
-              2,
-              div(style=divFormat0,h4("Ped Completeness")),
-              div(style=divFormat1, selectizeInput("completeness_keep", "keep [Phen]", choices=NULL, width = '95%')),
-              div(style=divFormat1, sliderInput("completeness_slider","born [RawPed] ", min = born_minmax[1], max = born_minmax[2],
-                                                value = born_slider_init_range, step = 1, width="95%", sep="")),
-              div(style=divFormat1, numericInput("completeness_maxd", "maxd", value=50, width = '95%')),
-              div(style=divFormat1, selectizeInput("completeness_by", "by", choices=NULL, width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_completeness", label="Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_completeness_view", label = "", icon=icon('search'),class = "custom-button"))
-            ),
-            column(
-              2,
-              div(style=divFormat0,h4("Pedigree Inbreeding")),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_pedInbreeding", label="Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_pedInbreeding_view", label = "", icon=icon('search'),class = "custom-button")),
-              br(),
-              br(),
-
-              div(style=divFormat0,h4("Breed Composition")),
-              div(style=divFormat1, selectizeInput("pedbreedcomp_breed", "thisBreed", choices=NULL, width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_pedbreedcomp", label="Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_pedbreedcomp_view",label = "", icon=icon('search'),class = "custom-button"))
-            ),
-
-
-          column(
-            2,
-            div(style=divFormat0, h4('Pedigree Summary')),
-            div(style=divFormat1, selectizeInput("pedsummary_keep_only", "keep.only [Phen]", choices=NULL, width = '95%')),
-            div(style=divFormat1, sliderInput("pedsummary_slider", "keep.only [Pedig] ", min=born_minmax[1], max=born_minmax[2],
-                                                value= born_slider_init_range, step= 1, width="95%",sep="")),
-            div(style=divFormat1, numericInput("pedsummary_maxd", "maxd", value=50, width = '95%')),
-            div(style=divFormat1, numericInput("pedsummary_d", "d", value=4, width = '95%')),
-            div(style=divFormat1, 
-                actionButton(inputId = "btn_pedsummary", label="Calculate", class = "custom-button"),
-                actionButton(inputId = "btn_pedsummary_view", label = "", icon=icon('search'),class = "custom-button"))
-          ),
-
-          column(
-            2,
-            div(style=divFormat0, h4('Filter/AgeContrib/L')),
-            div(style=divFormat1, sliderInput("filter_agecontrib_slider","born ", min=born_minmax[1], max=born_minmax[2],
-                value = born_slider_init_range, step = 1, sep="",width = '95%')),
-            div(style=divFormat1, selectizeInput("filter_agecontrib_breed", "thisBreed", choices=NULL, width = '95%')),
-            div(style=divFormat1, numericInput("filter_agecontrib_equiGen", label="equiGen > ", value=4, width = '95%')),
-            div(style=divFormat1, 
-                actionButton(inputId = "btn_filter_age_contribution", label = "Calculate", class = "custom-button"),
-                actionButton(inputId = "btn_filter_age_contribution_view", label = "",icon=icon("search"), class = "custom-button"))
-          )
-        ),
-
-          #---- Middle section ----
-          tags$hr(style = "border: 1px solid #eafefe; margin: 20px 0;"),
-          fluidRow(
-            column(
-              width=2,
-              div(style=divFormat0, h4('Pedigree Kinship for All')),
-              div(style=divFormat1, selectizeInput("pedkin_keeponly", "keep.only", choices=NULL, width = '95%')),
-              div(style=divFormat1, selectizeInput("pedkin_keep", "keep", choices=NULL, width = '95%')),
-              div(style=divFormat1, selectizeInput("pedkin_founder", "kinFounder", choices=NULL, width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_pedIBD", label = "Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_pedIBD_view", label = "",icon = icon("search"), class = "custom-button"))
-            ),
-
-            column(
-              width=2,
-              div(style=divFormat0, h4('Pedigree Kinship for Natives')),
-              div(style=divFormat1, selectizeInput("pedKinatN_breed", "thisBreed", choices=NULL, width = '95%')),
-              div(style=divFormat1, selectizeInput("pedKinatN_keeponly", "keep.only", choices=NULL, width = '95%')),
-              div(style=divFormat1, selectizeInput("pedKinatN_keep", "keep", choices=NULL, width = '95%')),
-              div(style=divFormat1, textInput("pedKinatN_ngen", label="nGen", value="NA", width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_pedKinatN", label = "Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_pedKinatN_view", label = "", icon=icon('search'),class = "custom-button"))
-            ),
-
-            column(
-              width=2,
-              div(style=divFormat0, h4('Candidates Description')),
-              div(style=divFormat1, selectizeInput("candes_cont", "cont", choices=NULL, width = '95%')),
-              div(style=divFormat1, numericInput("candes_n", "N", value=1000, width = '95%')),
-              div(style=divFormat1, selectInput("candes_quiet", "quiet", choices=c("FALSE","TRUE"), selected="FALSE", width = '95%')),
-              div(style=divFormat1, numericInput("candes_t", label="t", value=assume_candes_t, width = '95%')),
-              div(style=divFormat1, numericInput("candes_bc", label="bc", value="NULL", width = '95%')),
-              div(style=divFormat1, selectInput("candes_reduce", "reduce.data", choices=c("TRUE","FALSE"), selected='TRUE', width = '95%')),
-              div(style=divFormat1, 
-                  actionButton(inputId = "btn_candes", label = "Combine", class = "custom-button"),
-                  actionButton(inputId = "btn_candes_view", label = "", icon=icon('search'),class = "custom-button"))
-
-            ),
-
-            column(
-              width=2,
-              div(style=divFormat0, h4('Optimum Contribution')),
-              div(style=divFormat1, selectizeInput("opticont_method", "method",choices=c("max.BV", "min.BV", "max.pKin", "min.pKin", "max.pKinatN","min.pKinatN"), width = '95%')),
-              div(style=divFormat1, checkboxGroupInput(inputId="selected_con_opt", "Select:",choices=c("uniform=female", "ub.pKin", "ub.pKinatN", "lb.NC"),selected=c("uniform=female", "ub.pKin"), width = '95%')),
-              div(style=divFormat1, selectInput("opticont_bc", "bc", choices=c("NULL"), width = '95%')),
-              div(style=divFormat1, selectInput("opticont_solver", "solver", choices=c("alabama","cccp","cccp2","slsqp", "default"),selected="default", width = '95%')),
-              div(style=divFormat1, selectInput("opticont_quiet", "quiet", choices=c("FALSE","TRUE"), width = '95%')),
-              div(style=divFormat1, selectInput("opticont_make.definite", "make.definite", choices=c("FALSE","TRUE"), width = '95%')),
-              div(style=divFormat1, 
-                  actionButton("btn_opticont_method", "Calculate", class = "custom-button"),
-                  actionButton(inputId = "btn_opticont_method_view", label = "", icon=icon('search'),class = "custom-button"))
-
-            ),
-
-            column(
-              width=2,
-              div(style=divFormat0, h4('Optimization policies')),
-              div(style=divFormat1,tags$hr(style = "border: 1px solid #ccc; margin: 20px 0;")),
-              div(style=divFormat1, actionButton("opticont_method_btn1", "MaxBV", class = "custom-button2")),
-              div(style=divFormat1, actionButton("opticont_method_btn2", "MinF",class = "custom-button2")),
-              div(style=divFormat1,actionButton("opticont_method_btn3", "MaxNC",class = "custom-button2")),
-              div(style=divFormat1,actionButton("opticont_method_btn4", "MinNatC",class = "custom-button2")),
-              div(style=divFormat1,actionButton("opticont_method_btn5", "MinNC_MaxBV",class = "custom-button2")),
-              div(style=divFormat1,tags$hr(style = "border: 1px solid #ccc; margin: 20px 0;")),
-              div(style=divFormat1,actionButton("opticont_method_btn5", "RUN",class = "custom-button"))
-            )
-          ),
-        #  tags$hr(style = "border: 1px red #ccc; margin: 20px 0;")
-          # #---- Bottom section ----  
-          # # 
-          # # fluidRow(
-          # #   column(2,box(title = "Example BOX", height="130px", width='100%', background = 'red')),
-          # #   column(width = 8,
-          # #     box(
-          # #         width=NULL,
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV1", "min.BV"))),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV2", "min.BV"))),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV3", "min.BV"))),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV4", "min.BV"))),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV5", "min.BV"))),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV6", "min.BV"))),
-          # #         column(3,height="60px",actionButton(inputId = "candes_btn", label = "Combine")),
-          # #         column(3,height="60px",selectizeInput("opticont_method", "method", choices=c("max.BV8", "min.BV")))
-          # #     ),
-          # # 
-          # #         
-          # #         
-          # #         h5("hello world4")
-          # #   )
-          # # )
-          
         ), # tabpanel
         
         
