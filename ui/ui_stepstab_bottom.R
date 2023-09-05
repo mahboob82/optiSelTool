@@ -2,8 +2,8 @@
           column(
             width=2,
             div(style=divFormat0, h4('Pedigree Kinship for All')),
-            div(style=divFormat1, selectizeInput("pedkin_keeponly", "keep.only", choices=NULL, width = '95%')),
-            div(style=divFormat1, selectizeInput("pedkin_keep", "keep", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedkin_keeponly", "keep.only [Phen]", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedkin_keep", "keep [Pedig]", choices=NULL, width = '95%')),
             div(style=divFormat1, selectizeInput("pedkin_founder", "kinFounder", choices=NULL, width = '95%')),
             div(style=divFormat1, 
                 actionButton(inputId = "btn_pedIBD", label = "Calculate", class = "custom-button"),
@@ -13,9 +13,9 @@
           column(
             width=2,
             div(style=divFormat0, h4('Pedigree Kinship for Natives')),
-            div(style=divFormat1, selectizeInput("pedKinatN_breed", "thisBreed", choices=NULL, width = '95%')),
-            div(style=divFormat1, selectizeInput("pedKinatN_keeponly", "keep.only", choices=NULL, width = '95%')),
-            div(style=divFormat1, selectizeInput("pedKinatN_keep", "keep", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedKinatN_breed", "thisBreed [Pedig]", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedKinatN_keeponly", "keep.only [Phen]", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedKinatN_keep", "keep [Pedig]", choices=NULL, width = '95%')),
             div(style=divFormat1, textInput("pedKinatN_ngen", label="nGen", value="NA", width = '95%')),
             div(style=divFormat1, 
                 actionButton(inputId = "btn_pedKinatN", label = "Calculate", class = "custom-button"),

@@ -13,378 +13,13 @@ ShowEntryRowsList = list(
 )
 
 
+# IMPORT error and logging codes
+source('server/error_and_logsPart.R', local=TRUE)
 
 
-ShowRawPedigUploadError <- function (){
-  showModal(modalDialog(
-    title = "Pedigree Upload Error",
+# IMPORT table rendering codes
+source('server/renderTablesPart.R', local=TRUE)
 
-    div(tags$b("Original pedigree", style = "color: red;"),
-        tags$b("was not uploaded.", style = "color: black;"),
-        tags$hr(),
-        tags$b("Tips: Try uploading using left side upload options", 
-               style = "color: blue;")
-        ),
-    easyClose = TRUE,
-    footer = tagList(modalButton("Cancel")),
-    size="s"
-  ))
-}
-
-
-
-ShowPedigError <- function (){
-  showModal(modalDialog(
-    title = "Pedig Object Error",
-    #paste("'Pedig' dataframe is not created! ", "Try prePed first!"),
-    div(tags$b("Pedig", style = "color: red;"),
-        tags$b("dataframe not found.", style = "color: black;"),
-        tags$hr(),
-        tags$b("Tips: Try ", style = "color: black;"),
-        tags$b("prePed ", style = "color: blue;"),
-        tags$b(" step at first.", style = "color: black;")
-        ),
-    easyClose = TRUE,
-    footer = tagList(modalButton("Cancel")),
-    size="s"
-  ))
-}
-
-ShowNativeKinshipError <- function (){
-  showModal(modalDialog(
-    title =  "Pedig Object Error",
-    div(
-      tags$b("Pedig", style = "color: red;"),
-      tags$b("object not found.", style = "color: black;"),
-      tags$hr(),
-      tags$b("Tips: Try ", style = "color: black;"),      
-      tags$b(" prePed()", style = "color: blue;"),
-      tags$b("&"),
-      tags$b(" pedBreedComp().", style = "color: blue;"),
-      tags$b("  steps in order.")
-      ),
-    easyClose = TRUE,
-    footer = tagList(modalButton("Cancel")),
-    size="s"
-  ))
-}
-
-ShowNativeKinshipExtraError <- function (msg){
-  showModal(modalDialog(
-    title = "Pedig column error:",
-    div(
-      tags$b("Check"),
-      tags$b("Pedig", style = "color: red;"),
-      tags$b("object for NC column.", style = "color: black;"),
-      tags$hr(),
-      tags$b("Tips: Try ", style = "color: black;"),
-      tags$b(" prePed()", style = "color: blue;"),
-      tags$b(" &"),
-      tags$b(" pedBreedComp()", style = "color: blue;"),
-      tags$b(" steps in order.")
-      ),
-    easyClose = TRUE,
-    footer = tagList(modalButton("Cancel")),
-    size="s"
-  ))
-}
-
-
-ShowAgeContError <- function (){
-  showModal(modalDialog(
-    title = "Error",
-    #paste("Empty Dataframe output!", "\nTry different options!"),
-    div(tags$b("agecont", style = "color: red;"),
-        tags$b("returned empty dataframe.", style = "color: black;"),
-        tags$br(),
-        tags$b("Pleast try different options.", style = "color: black;"),
-    ),
-    easyClose = TRUE,
-    footer = tagList(modalButton("Cancel")),
-    size="s"
-  ))
-}
-
-
-
-WriteTextLogPrePed <- function(textLog, input){
-  textLog(
-    paste(
-      textLog(),
-      div(tags$b("[Pedigree Prepare]", style="color:blue;font-size:12pt")),
-      div(tags$text(
-        paste0(
-          "optiSel::prePed( keep=",ifelse(input$preped_keep=="NULL","","RawPed$"),          
-          input$preped_keep,
-          ", thisBreed=",
-          input$preped_breed,
-          ", lastNative=",
-          input$preped_lastnative,
-          ", addNum=",
-          input$preped_addnum,
-          ")\n")
-        ,style="color:teal;font-size:14pt")
-      ),
-      sep = ""
-    )
-  )
-}
-
-WriteTextLogCompletenesss <- function(textLog, input, run_flag){
-  textLog(
-    paste(
-      textLog(),
-      div(tags$b("[Pedigree Completeness]", style="color:blue;font-size:12pt")),
-      div(
-        tags$text(
-          paste0(
-            "optiSel::completeness( keep=",ifelse(run_flag==1 ,"Phen$", ""),
-            input$completeness_keep,
-            ", born=(",
-            ifelse(run_flag==2, input$completeness_slider[1], 0),
-            " to ",
-            #input$completeness_slider[2],
-            ifelse(run_flag==2, input$completeness_slider[2], 0),
-            "), maxd=",
-            input$completeness_maxd,
-            ", by=",
-            input$completeness_by,
-            " )\n"
-          ), 
-          style="color:teal;font-size:14pt"
-        )
-      ),
-      sep = ""
-    )
-  )
-}
-
-
-WriteTextLogInbreeding <- function(textLog, input){
-  textLog(
-    paste(
-      textLog(),
-      div(tags$b("[Inbreeding Coeff]", style="color:blue;font-size:12pt")),
-      div(
-        tags$text(
-          paste0(
-            "optiSel::pedInbreeding( thisBreed=\"", input$pedbreedcomp_breed,"\" )\n"
-          ), 
-          style="color:teal;font-size:14pt"
-        )
-      ),
-      sep = ""
-    )
-  )
-  
-}
-
-
-WriteTextLogBreedComp <- function(textLog, input){
-  textLog(
-    paste(
-      textLog(),
-      div(tags$b("[Breed Composition]", style="color:blue;font-size:12pt")),
-      div(
-        tags$text(
-          paste0(
-            "optiSel::pedBreedComp( thisBreed=\"", input$pedbreedcomp_breed,"\" )\n"
-          ), 
-          style="color:teal;font-size:14pt"
-        )
-      ),
-      sep = ""
-    )
-  )
-  
-}
-
-
-WriteTextLogSummPed <- function(textLog, input, run_flag){
-  textLog(
-    paste(
-      textLog(),
-      div(tags$b("[Ped Summary Stats]", style="color:blue;font-size:12pt")),
-      div(
-        tags$text(
-          paste0(
-            "optiSel::summary.Pedig( keep.only=",
-            ifelse(
-              run_flag==1,
-              paste0("Phen$",input$pedsummary_keep_only),
-              paste0(
-                "Pedig$Born %in% (",
-                ifelse(run_flag==2, input$pedsummary_slider[1], 0),
-                ":",
-                ifelse(run_flag==2, input$pedsummary_slider[2], 0),
-                ")"
-              )
-            ),
-            ", maxd=",
-            input$pedsummary_maxd,
-            ", d=",
-            input$pedsummary_d,
-            " )\n"
-          ), 
-          style="color:teal;font-size:14pt"
-        )
-      ),
-      sep = ""
-    )
-  )
-}
-
-
-WriteTextLogFilterPed <- function(textLog, input, run_flag){
-
-}
-
-
-
-renderDT15 <- function(df, row=15){
-  renderDT(
-    df,
-    filter = 'top',
-    options = list(
-      scrollX = TRUE,
-      paging = TRUE,
-      pageLength = row,
-      lengthMenu = ShowEntryRowsList,
-      #dom = 'Blfrtip' # 'tip'
-      dom='Blfrtip'
-    )
-  )
-}
-
-renderDTminimal <- function(df, row=15){
-  renderDT(
-    df,
-    filter = 'top',
-    options = list(
-      scrollX = TRUE,
-      paging = TRUE,
-      pageLength = row,
-      lengthMenu = ShowEntryRowsList,
-      dom = 'tp' # 'tip'
-    )
-  )
-}
-
-renderDT15special <- function(df, row=15){
-  renderDataTable(
-    df,
-    filter = 'top',
-    options = list(
-      searchCols = list(NULL, NULL, NULL,NULL, NULL, NULL,NULL), 
-      # scrollX = TRUE,
-      # paging = TRUE,
-      # pageLength = row,
-      # lengthMenu = ShowEntryRowsList,
-      # dom = 't', # 'tip',Blfrtip
-      initComplete = JS(
-          "function(settings, json) {",
-          "  var table = this.api();",
-          "  table.columns().every(function() {",
-          "    var that = this;",
-          "    $('input', this.header()).on('keyup', function() {",
-          "      if (that.search() !== this.value) {",
-          "        that.search(this.value).draw();",
-          "      }",
-          "    });",
-          "  });",
-          "}"
-      ),
-      #dom = 'Blfrtip',
-      rowCallback = JS(
-        "function(row, data, index) {",
-        "  var cells = $('td', row);",
-        "  cells.eq(0).addClass('highlight');",  # Highlight the first column
-        "}"
-      ),
-      class = "display cell-border stripe"
-    )
-  )
-}
-
-
-
-renderDT15_Pkin_dblClick <- function(df, rows=15){
-  renderDT(
-    df,
-    filter = 'top',
-    options = list(
-      scrollX = TRUE,
-      paging = TRUE,
-      pageLength = rows,
-      lengthMenu = ShowEntryRowsList,
-      dom = 'Blfrtip' # 'tip'
-    ),
-    callback = htmlwidgets::JS(
-      "table.on('dblclick', 'td',",
-      "  function() {",
-      "    var row = table.row(this).index();",
-      "    var col = table.column(this).index();",
-      "    var info = table.page.info()",
-      "    var pagelen = table.page.len()",
-      "    Shiny.setInputValue('Pkin_dt_dblclick', {dt_row: row+1, dt_col: col+1, dt_page: info.page, dt_len: pagelen} );",
-      "  }",
-      ");"
-    )
-  )
-}
-
-renderDT15_PkinatN_dblClick <- function(df, rows=15){
-  renderDT(
-    df,
-    filter = 'top',
-    options = list(
-      scrollX = TRUE,
-      paging = TRUE,
-      pageLength = rows,
-      lengthMenu = ShowEntryRowsList,
-      dom = 'Blfrtip' # 'tip'
-    ),
-    callback = htmlwidgets::JS(
-      "table.on('dblclick', 'td',",
-      "  function() {",
-      "    var row = table.row(this).index();",
-      "    var col = table.column(this).index();",
-      "    var info = table.page.info()",
-      "    var pagelen = table.page.len()",
-      "    Shiny.setInputValue('PkinatN_dt_dblclick', {dt_row: row+1, dt_col: col+1, dt_page: info.page, dt_len: pagelen} );",
-      "  }",
-      ");"
-    )
-  )
-}
-
-
-# 
-# renderDTPkinatNdblClick <- function(df, rows=15){
-#   renderDT(
-#     df,
-#     filter = 'top',
-#     options = list(
-#       scrollX = TRUE,
-#       paging = TRUE,
-#       pageLength = rows,
-#       lengthMenu = ShowEntryRowsList,
-#       dom = 'Blfrtip' # 'tip'
-#     ),
-#     callback = htmlwidgets::JS(
-#       "table.on('dblclick', 'td',",
-#       "  function() {",
-#       "    var tbl_name = 'PKinatN;'",
-#       "    var row = table.row(this).index();",
-#       "    var col = table.column(this).index();",
-#       "    var info = table.page.info()",
-#       "    var pagelen = table.page.len()",
-#       "    Shiny.setInputValue('dt_dblclick', {dt_tbl_name: tbl_name, dt_row: row+1, dt_col: col+1, dt_page: info.page, dt_len: pagelen} );",
-#       "  }",
-#       ");"
-#     )
-#   )
-# }
 
 
 ######################################################################################################
@@ -408,6 +43,7 @@ assume_candes_t <<- 0
 
 
 appdfs <<- c('Pedig','Compl','Inbreeding', 'SummPedig', 'BreedComp', 'AgeContrib', 'Pkin', 'PkinatN')
+
 divFormat1 = "
 display: contents; 
 margin: 0px;
@@ -415,12 +51,10 @@ padding: 2px;
 "
 
 
-
 # ********************************************************************************************************************
 # *************************** SEVER SIDE CODES (START) ****************************************************************
 # ********************************************************************************************************************
 # ********************************************************************************************************************
-
 
 
 server <- function(input, output, session) {
@@ -440,6 +74,9 @@ server <- function(input, output, session) {
 
   #######################################################################
 
+  # raw.ped <<- vroom("PedigreeWithErrors.csv", delim = ",")
+  # raw.phen <<- vroom("Phen.csv", delim = ",")
+  # 
   observeEvent(input$RawPedUpload, {
     
     req(input$RawPedUpload)
@@ -456,24 +93,18 @@ server <- function(input, output, session) {
     else
       print("ERROR while file upload")
     
-  
+    
+    # for tables on left
     raw.ped <<- as.data.frame(raw.ped)
     raw.ped <- raw.ped %>% 
       mutate(Indiv= as.character(Indiv),
              Sire= as.character(Sire),
-             Dam= as.character(Dam),
-             )
+             Dam= as.character(Dam))
     
     rownames(raw.ped) <- raw.ped$Indiv
     output$RawPed <- renderDT15(raw.ped, 12)
-    # output$RawPed <- renderDataTable({
-    #   datatable(raw.ped, 
-    #             options = list(
-    #               searchCols = list(NULL, NULL, NULL,NULL, NULL, NULL,NULL)  # Disable individual column searching
-    #             ))
-    # })
-    # output$RawPed <- renderDT15special(raw.ped, 12)
-    
+
+    # for tables on right
     column_info = data.frame(
       Column = colnames(raw.ped),
       DataType = sapply(raw.ped, class),
@@ -506,7 +137,11 @@ server <- function(input, output, session) {
     updateSliderInput(session, "filter_agecontrib_slider", value=born_slider_init_range, min=born_minmax[1], max =born_minmax[2])
     
     updateSelectizeInput(session, 'filter_agecontrib_breed', choices=unique(raw.ped$Breed))
-    updateSelectizeInput(session, 'pedkin_keep', choices = c("NULL", colnames(raw.ped)), server = TRUE )    
+    updateSelectizeInput(session, 'pedkin_keep', choices = c("NULL", colnames(raw.ped)))
+    
+    updateSelectizeInput(session, 'pedKinatN_breed', choices = unique(raw.ped$Breed)) 
+    updateSelectizeInput(session, 'pedKinatN_keep', choices = c("NULL", colnames(raw.ped)))
+
         
   })
 
@@ -550,11 +185,10 @@ server <- function(input, output, session) {
     rownames(column_info) <- NULL
     output$RawPhenColumnInfo <- renderDTminimal(column_info)
     
-    updateSelectizeInput(session,'completeness_keep', choices = c("NULL", names(raw.phen)),server = TRUE)
-    updateSelectizeInput(session, 'pedsummary_keep_only', choices = c("NULL", names(raw.phen)), server = TRUE )
-    updateSelectizeInput(session, 'pedkin_keeponly', choices = c(colnames(raw.phen)), server = TRUE)
-        
-
+    updateSelectizeInput(session,'completeness_keep', choices = c("NULL", names(raw.phen)))
+    updateSelectizeInput(session, 'pedsummary_keep_only', choices = c("NULL", names(raw.phen)))
+    updateSelectizeInput(session, 'pedkin_keeponly', choices = c(colnames(raw.phen)))
+    updateSelectizeInput(session, 'pedKinatN_keeponly', choices =  c(colnames(Phen)), selected = "Indiv")
   })
   
   #######################################################################  
@@ -626,7 +260,7 @@ server <- function(input, output, session) {
   # ===================================================== PED-KINSHIP-NATIVE ===========================================
   # ====================================================================================================================
 
-  # source(file="./server/pedKinAtNPart.R", local=TRUE)
+  source(file="./server/pedKinAtNPart.R", local=TRUE)
   
 
 
