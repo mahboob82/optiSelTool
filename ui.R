@@ -146,7 +146,7 @@ ui <- shinyUI(
 
 
 
-shinyApp(ui=ui, server=server)
+# shinyApp(ui=ui, server=server)
 
 
 
