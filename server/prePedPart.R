@@ -59,7 +59,7 @@
         ## when keep is based on Phen Indiv column
         Pedig <<- btn_prePed_onclick(
             raw.ped,
-            Phen,
+            raw.phen,
             input$preped_keep, 
             input$preped_breed, 
             ifelse(prePed_lastNativeActivated, input$preped_lastNative, NA),

@@ -146,7 +146,7 @@ server <- function(input, output, session) {
   })
 
   
-  ######################################## PHEN UPLOAD #################################
+  ######################################## RawPHEN UPLOAD #################################
   observeEvent(input$RawPhenUpload, {
     
     req(input$RawPhenUpload)
@@ -173,8 +173,8 @@ server <- function(input, output, session) {
     raw.phen <- raw.phen %>% 
       mutate(Indiv= as.character(Indiv))    
     
-    Phen <<- raw.phen
-    output$Phen <- renderDT15(raw.phen,12)
+    RawPhen <<- raw.phen
+    output$RawPhen <- renderDT15(raw.phen,12)
     
     column_info = data.frame(
       Column = colnames(raw.phen),
@@ -188,10 +188,29 @@ server <- function(input, output, session) {
     updateSelectizeInput(session,'completeness_keep', choices = c("NULL", names(raw.phen)))
     updateSelectizeInput(session, 'pedsummary_keep_only', choices = c("NULL", names(raw.phen)))
     updateSelectizeInput(session, 'pedkin_keeponly', choices = c(colnames(raw.phen)))
-    updateSelectizeInput(session, 'pedKinatN_keeponly', choices =  c(colnames(Phen)), selected = "Indiv")
+    updateSelectizeInput(session, 'pedKinatN_keeponly', choices =  c(colnames(raw.phen)), selected = "Indiv")
   })
   
+  
+  # observeEvent(input$btn_filter_age_contribution,{
+  # 
+  # print(ls()[sapply(ls(), function(x) is.data.frame(get(x)))])
+  # # updateSelectizeInput(
+  # #   session,
+  # #   'candes_cont',
+  # #   choices = appdfs, #"AgeContrib", #ls()[sapply(ls(), function(x) is.data.frame(get(x)))],
+  # #   selected="AgeContrib",
+  # #   server = TRUE
+  # # )
+  #   
+  # })
+  
+  
+  
   #######################################################################  
+  
+  
+  
   
   
   # ===DISPLAYING RAWPED=========================================================================================
@@ -262,6 +281,12 @@ server <- function(input, output, session) {
 
   source(file="./server/pedKinAtNPart.R", local=TRUE)
   
+
+  # ====================================================================================================================
+  # ===================================================== PED-KINSHIP-NATIVE ===========================================
+  # ====================================================================================================================
+
+  source(file="./server/candesPart.R", local=TRUE)
 
 
 #   
@@ -345,15 +370,27 @@ server <- function(input, output, session) {
 #   
 #   
   
-###################################
+############################################################################################################
   
-  observeEvent(input$RawPedToHome|input$PhenToHome|input$PedigToHome|
-                 input$InbreedingToHome|input$ComplToHome|input$SummPedigToHome|
-                 input$BreedCompToHome|input$AgeContribToHome|input$PkinToHome|
+  observeEvent(input$RawPedToHome|
+                 input$RawPhenToHome|
+                 input$PedigToHome|
+                 input$InbreedingToHome|
+                 input$ComplToHome|
+                 input$SummPedigToHome|
+                 input$BreedCompToHome|
+                 input$AgeContribToHome|
+                 input$PhenModifiedToHome|
+                 input$PkinToHome|
                  input$PkinatNtoHome, {
+                   
       updateTabItems(session, "allTabs", selected = "STEPS")
   })
   
+  
+  
+  
+  ############################################################################################################
   observeEvent(input$refresh, {
     #shinyjs::reset("Workspace")
     Pedig <<- data.frame()
@@ -370,6 +407,7 @@ server <- function(input, output, session) {
     
   })
   
+  ############################################################################################################
   
     # ---- BUTTON event ----------------------------------------------------------------------------
   observeEvent(input$btnPlanA,{
@@ -393,7 +431,7 @@ server <- function(input, output, session) {
   
   
   
-  
+  ############################################################################################################
   
   observeEvent(input$goToTop, {
     session$sendCustomMessage(type = "scroll", message = "top")
@@ -404,7 +442,7 @@ server <- function(input, output, session) {
     session$sendCustomMessage(type = "scroll", message = "bottom")
   })
   
-  
+  ############################################################################################################
 
   
 }

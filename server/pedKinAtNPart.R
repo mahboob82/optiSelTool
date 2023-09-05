@@ -45,7 +45,7 @@
 
     rv = btn_pedIBDatN_onclick(
       Pedig,
-      Phen,
+      raw.phen,
       input$pedKinatN_breed,
       input$pedKinatN_keeponly,
       input$pedKinatN_keep,
@@ -94,7 +94,7 @@
       animal2 = columns
     #animal2= ifelse(is.na(columns[c])==FALSE, columns[c], columns)
     #animal2 = cols[c] | cols
-    print(animal2)
+    # print(animal2)
     #print(class(columns[c]))
     #print(columns[c])
     #print(c(animal1, animal2))

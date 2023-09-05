@@ -25,7 +25,7 @@
           column(
             width=2,
             div(style=divFormat0, h4('Candidates Description')),
-            div(style=divFormat1, selectizeInput("candes_cont", "cont", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("candes_cont", "cont [df]", choices=NULL, width = '95%')),
             div(style=divFormat1, numericInput("candes_n", "N", value=1000, width = '95%')),
             div(style=divFormat1, selectInput("candes_quiet", "quiet", choices=c("FALSE","TRUE"), selected="FALSE", width = '95%')),
             div(style=divFormat1, numericInput("candes_t", label="t", value=assume_candes_t, width = '95%')),

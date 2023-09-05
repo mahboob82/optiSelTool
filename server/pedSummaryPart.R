@@ -34,7 +34,7 @@
       if (input$pedsummary_keep_only != "NULL"){
         SummPedig <<- btn_pedSummary_onclick(
           Pedig,
-          Phen,
+          raw.phen,
           input$pedsummary_keep_only,
           input$pedsummary_maxd,
           input$pedsummary_d)

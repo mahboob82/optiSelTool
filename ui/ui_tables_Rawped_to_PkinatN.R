@@ -23,15 +23,15 @@
                       )
                     )
                 ),
-                tabPanel("Phen",
+                tabPanel("RawPhen",
                          fluidRow(
                            column(9,
                                   #div( style="inline",
-                                  actionButton("PhenToHome", label=NULL, icon=icon("home")),
-                                  actionButton("deletePhen", label=NULL, icon=icon("trash")),
+                                  actionButton("RawPhenToHome", label=NULL, icon=icon("home")),
+                                  actionButton("deleteRawPhen", label=NULL, icon=icon("trash")),
                                   tags$h4("Phenotype data [original]") ,
                                   
-                                  DTOutput("Phen")
+                                  DTOutput("RawPhen")
                            ),
                            column(3,
                                   br(),
@@ -55,67 +55,113 @@
                          "Pedig",
                         fluidRow(
                            column(9,
-                            #     div( style="inline",
-                            actionButton("PedigToHome", label=NULL, icon=icon("home")),
-                            actionButton("deletePedig", label=NULL, icon=icon("trash")),
-                            tags$h4("Cleaned Pedigree [processed]"),
-                            DTOutput("Pedig")                           
+                                  actionButton("PedigToHome", label=NULL, icon=icon("home")),
+                                  actionButton("deletePedig", label=NULL, icon=icon("trash")),
+                                  tags$h4("Cleaned Pedigree [processed]"),
+                                  DTOutput("Pedig")                           
                            ),
                            column(3,
                                   radioButtons("PedigDownloadFormat", label=NULL, 
                                                choices = c("txt", "csv", "xlsx", "rds"), inline = TRUE),
                                   downloadButton("downloadPedig", label='Download', icon=icon("download"))
-                         
-                          )
+                                  
+                           )
                         )
                 ),
                 tabPanel("Compl", 
-                         div( style="inline",
-                              actionButton("ComplToHome", label=NULL, icon=icon("home")),
-                              actionButton("saveCompl", label="Download", icon=icon("download")),
-                              actionButton("deleteCompl", label=NULL, icon=icon("trash")),
-                              tags$h4("Completeness [processed]")),
-                          DTOutput("Compl")
-                        ),
+                         fluidRow(
+                           column(9,
+                                  actionButton("ComplToHome", label=NULL, icon=icon("home")),
+                                  #actionButton("saveCompl", label="Download", icon=icon("download")),
+                                  actionButton("deleteCompl", label=NULL, icon=icon("trash")),
+                                  tags$h4("Completeness [processed]"),
+                                  DTOutput("Compl")
+                           ),
+                           column(3,
+                                  radioButtons("ComplDownloadFormat", label=NULL, 
+                                               choices = c("txt", "csv", "xlsx", "rds"), inline = TRUE),
+                                  downloadButton("downloadCompl", label='Download', icon=icon("download"))
+                                  
+                           )
+                         )
+                ),
                 tabPanel("Inbreeding",
-                         div( style="inline",
+                         fluidRow(
+                           column(9,
                               actionButton("InbreedingToHome", label=NULL, icon=icon("home")),
-                              actionButton("saveInbreeding", label="Download", icon=icon("download")),
+                              #actionButton("saveInbreeding", label="Download", icon=icon("download")),
                               actionButton("deleteInbreeding", label=NULL, icon=icon("trash")),
-                              tags$h4("Inbreeding Coefficient [processed]")),
-                         DTOutput("Inbreeding")
-                        ),
+                              tags$h4("Inbreeding Coefficient [processed]"),
+                              DTOutput("Inbreeding")
+                           ),
+                           column(3,
+                                  radioButtons("InbreedingDownloadFormat", label=NULL, 
+                                               choices = c("txt", "csv", "xlsx", "rds"), inline = TRUE),
+                                  downloadButton("downloadInbreeding", label='Download', icon=icon("download"))
+                                  
+                           )                           
+                        )
+                ),
                 tabPanel("BreedComp",
-                         div( style="inline",
-                              actionButton("BreedCompToHome", label=NULL, icon=icon("home")),
-                              actionButton("saveBreedComp", label="Download", icon=icon("download")),
-                              actionButton("deleteBreedComp", label=NULL, icon=icon("trash")),
-                              tags$h4("Breed composition of Animals [processed]"),
-                              htmlOutput("BreedCompBreed")),
-                         DTOutput("BreedComp")
-                        ),
+                         fluidRow(
+                           column(9,
+                                  actionButton("BreedCompToHome", label=NULL, icon=icon("home")),
+                                  #actionButton("saveBreedComp", label="Download", icon=icon("download")),
+                                  actionButton("deleteBreedComp", label=NULL, icon=icon("trash")),
+                                  tags$h4("Breed composition of Animals [processed]"),
+                                  htmlOutput("BreedCompBreed"),
+                                  DTOutput("BreedComp")
+                           ),
+                           column(3,
+                                  radioButtons("BreedCompDownloadFormat", label=NULL, 
+                                               choices = c("txt", "csv", "xlsx", "rds"), inline = TRUE),
+                                  downloadButton("downloadBreedComp", label='Download', icon=icon("download"))
+                                  
+                           )                
+                         )
+                ),
                 tabPanel("SummPedig",
+                         fluidRow(
+                           column(9,
+                                  actionButton("SummPedigToHome", label=NULL, icon=icon("home")),
+                                  #actionButton("saveSummPedig", label="Download", icon=icon("download")),
+                                  actionButton("deleteSummPedig", label=NULL, icon=icon("trash")),
+                                  tags$h4("Summary of Pedigree [processed]"),
+                                  DTOutput("SummPedig")
+                           ),
+                           column(3,
+                                  radioButtons("SummPedigDownloadFormat", label=NULL, 
+                                               choices = c("txt", "csv", "xlsx", "rds"), inline = TRUE),
+                                  downloadButton("downloadSummPedig", label='Download', icon=icon("download"))
+                                  
+                           )                
+                         )
+                ),                         
                          
-                         div( style="inline",
-                              actionButton("SummPedigToHome", label=NULL, icon=icon("home")),
-                              actionButton("saveSummPedig", label="Download", icon=icon("download")),
-                              actionButton("deleteSummPedig", label=NULL, icon=icon("trash")),
-                              tags$h4("Summary of Pedigree [processed]")),
-                         
-                         DTOutput("SummPedig")
-                        ),
                 tabPanel("AgeContrib",
                     fluidRow(
                       column(6,
                              div( style="inline",
                                   actionButton("AgeContribToHome", label=NULL, icon=icon("home")),
-                                  actionButton("saveAgeContrib", label="Download", icon=icon("download")),
+                                  #actionButton("saveAgeContrib", label="Download", icon=icon("download")),
                                   actionButton("deleteAgeContrib", label=NULL, icon=icon("trash")),
                                   tags$h4("Age contribution of population [processed]")),
                              DTOutput("AgeContrib")
                       )
                     )
                 ),
+                tabPanel("Phen",
+                    fluidRow(
+                      column(6,
+                             div( style="inline",
+                                  actionButton("PhenModifiedToHome", label=NULL, icon=icon("home")),
+                                  #actionButton("savePhenModified", label="Download", icon=icon("download")),
+                                  actionButton("deletePhenModified", label=NULL, icon=icon("trash")),
+                                  tags$h4("Phen Modified [processed]")),
+                             DTOutput("Phen")
+                      )
+                    )
+                ),                
                 tabPanel("Pkin",
                     fluidRow(
                          column(9,

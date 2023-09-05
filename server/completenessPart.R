@@ -42,7 +42,7 @@
       if (input$completeness_keep != "NULL"){
         Compl <<- btn_completeness_onclick(
           Pedig,
-          Phen,
+          raw.phen,
           input$completeness_keep,
           input$completeness_maxd,
           input$completeness_by)

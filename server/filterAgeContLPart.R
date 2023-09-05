@@ -44,6 +44,7 @@
 
       output$AgeContrib = renderDT15(AgeContrib, 12)
       output$Phen = renderDT15(PhenUpdated, 12)
+      
 
 
       # todo: set L on the screen

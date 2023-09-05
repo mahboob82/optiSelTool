@@ -16,7 +16,7 @@ ui_figures = source("ui/ui_figures.R")
 
 
 #--------------HEADER SECTION-------------------------------------------------------------------------------------------
-appHeader <- dashboardHeader(title='OptSel-Breeding')
+appHeader <- dashboardHeader(title='OCSApp')
 
 #--------------SIDEBAR SECTION------------------------------------------------------------------------------------------
 source('ui/ui_sidebar.R', local=TRUE)

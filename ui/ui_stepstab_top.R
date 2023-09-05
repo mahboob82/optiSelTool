@@ -24,7 +24,7 @@
             column(
               2,
               div(style=divFormat0,h4("Ped Completeness")),
-              div(style=divFormat1, selectizeInput("completeness_keep", "keep [Phen]", choices=NULL, width = '95%')),
+              div(style=divFormat1, selectizeInput("completeness_keep", "keep [RawPhen]", choices=NULL, width = '95%')),
               div(style=divFormat1, sliderInput("completeness_slider","born [RawPed] ", min = born_minmax[1], max = born_minmax[2],
                                                 value = born_slider_init_range, step = 1, width="95%", sep="")),
               div(style=divFormat1, numericInput("completeness_maxd", "maxd", value=50, width = '95%')),
@@ -53,7 +53,7 @@
           column(
             2,
             div(style=divFormat0, h4('Pedigree Summary')),
-            div(style=divFormat1, selectizeInput("pedsummary_keep_only", "keep.only [Phen]", choices=NULL, width = '95%')),
+            div(style=divFormat1, selectizeInput("pedsummary_keep_only", "keep.only [RawPhen]", choices=NULL, width = '95%')),
             div(style=divFormat1, sliderInput("pedsummary_slider", "keep.only [Pedig] ", min=born_minmax[1], max=born_minmax[2],
                                                 value= born_slider_init_range, step= 1, width="95%",sep="")),
             div(style=divFormat1, numericInput("pedsummary_maxd", "maxd", value=50, width = '95%')),

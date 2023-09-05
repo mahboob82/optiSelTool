@@ -18,6 +18,8 @@ ShowRawPedigUploadError <- function (){
 
 
 
+
+
 ShowPedigError <- function (){
   showModal(modalDialog(
     title = "Pedig Object Error",
@@ -34,6 +36,40 @@ ShowPedigError <- function (){
     size="s"
   ))
 }
+
+ShowPkinError <- function (){
+  showModal(modalDialog(
+    title = "Pkin Object Error",
+    div(tags$b("Pkin", style = "color: red;"),
+        tags$b("dataframe not found.", style = "color: black;"),
+        tags$hr(),
+        tags$b("Tips: Try ", style = "color: black;"),
+        tags$b("pedIBD ", style = "color: blue;"),
+        tags$b(" step (6) at first.", style = "color: black;")
+        ),
+    easyClose = TRUE,
+    footer = tagList(modalButton("Cancel")),
+    size="s"
+  ))
+}
+
+
+ShowPkinatNError <- function (){
+  showModal(modalDialog(
+    title = "Pkin Object Error",
+    div(tags$b("PkinatN", style = "color: red;"),
+        tags$b("dataframe not found.", style = "color: black;"),
+        tags$hr(),
+        tags$b("Tips: Try ", style = "color: black;"),
+        tags$b("pedIBDatN ", style = "color: blue;"),
+        tags$b(" step (7) at first.", style = "color: black;")
+        ),
+    easyClose = TRUE,
+    footer = tagList(modalButton("Cancel")),
+    size="s"
+  ))
+}
+
 
 ShowNativeKinshipError <- function (){
   showModal(modalDialog(
@@ -87,6 +123,9 @@ ShowNativeKinshipEmptyDFReturn <- function (msg){
   ))
 }
 
+
+
+
 ShowAgeContError <- function (){
   showModal(modalDialog(
     title = "Error",
@@ -101,6 +140,22 @@ ShowAgeContError <- function (){
     size="s"
   ))
 }
+
+ShowCustomMsg <- function (msg){
+  showModal(
+    modalDialog(
+    title = "Error",
+    div(tags$b(msg)),
+    easyClose = TRUE,
+    footer = tagList(modalButton("Cancel")),
+    size="s"
+    )
+  )
+}
+
+
+
+
 
 
 
@@ -135,7 +190,7 @@ WriteTextLogCompletenesss <- function(textLog, input, run_flag){
       div(
         tags$text(
           paste0(
-            "optiSel::completeness( keep=",ifelse(run_flag==1 ,"Phen$", ""),
+            "optiSel::completeness( keep=",ifelse(run_flag==1 ,"RawPhen$", ""),
             input$completeness_keep,
             ", born=(",
             ifelse(run_flag==2, input$completeness_slider[1], 0),
@@ -208,7 +263,7 @@ WriteTextLogSummPed <- function(textLog, input, run_flag){
             "optiSel::summary.Pedig( keep.only=",
             ifelse(
               run_flag==1,
-              paste0("Phen$",input$pedsummary_keep_only),
+              paste0("RawPhen$",input$pedsummary_keep_only),
               paste0(
                 "Pedig$Born %in% (",
                 ifelse(run_flag==2, input$pedsummary_slider[1], 0),

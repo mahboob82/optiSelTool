@@ -200,15 +200,19 @@ btn_ageContribL_onclick <- function(df, sld, breed, equiGen){
   #print(sld)
 
   use = df$Born %in% (sld[1]:sld[2]) & (df$Breed==breed)
-  use = use & summary(df)$equiGen>=equiGen
-  print(c("Indiv", "Sex", "Breed", "Born", "BV", "NC") %in% colnames(df))
+  
+  if (equiGen>0)
+    use = use & summary(df)$equiGen>=equiGen
+
+  
+  #print(c("Indiv", "Sex", "Breed", "Born", "BV", "NC") %in% colnames(df))
   target_cols = c("Indiv", "Sex", "Breed", "Born", "BV", "NC")
   phen= df[use, intersect(colnames(df), target_cols)]
   
   # add a column 
   phen$isCandidate= phen$Born<=sld[2] + 1
   flag = 0
-  print(breed)  
+  #print(breed)  
   
   if (nrow(phen) == 0){
     flag = 1

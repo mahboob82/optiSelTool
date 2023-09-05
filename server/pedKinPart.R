@@ -47,7 +47,7 @@
 
     rv = btn_pedIBD_onclick(
       Pedig,
-      Phen,
+      raw.phen,
       input$pedkin_keeponly,
       input$pedkin_keep,
       input$pedkin_founder) # returns (list(flag, pKin))
@@ -69,8 +69,9 @@
     #print(str(PkinCopy))
     #print(str(Phen))
     #Phen <<- as.data.frame(Phen)
-    
-    PkinCopy <<- dplyr::left_join(PkinCopy, dplyr::select(Phen, Indiv, Sex), by="Indiv")
+    tmpdf = dplyr::select(raw.phen, Indiv, Sex)
+    tmpdf$Indiv = as.character(tmpdf$Indiv)
+    PkinCopy <<- dplyr::left_join(PkinCopy, tmpdf, by="Indiv")
     PkinCopy <<- PkinCopy %>% dplyr::select(c(Indiv, Sex), everything())
     PkinCopyRender <<- PkinCopy
 
@@ -116,7 +117,7 @@
     print(animal)
 
     if (sex=="female"){
-      isMale <- Pedig$Sex=="male" & (Pedig$Indiv %in% Phen$Indiv[Phen$BV> as.numeric(input$Pkinship_BV)])
+      isMale <- Pedig$Sex=="male" & (Pedig$Indiv %in% raw.phen$Indiv[raw.phen$BV> as.numeric(input$Pkinship_BV)])
       males  <- Pedig$Indiv[isMale & summary(Pedig)$equiGen>input$Pkinship_equiGen]
       print("It came here0")
       SireKinshipRank <<- Pkin[males, animal, drop=FALSE]
