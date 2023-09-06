@@ -2,21 +2,21 @@
   # =========================================== COMPLETENESS CALCULATION ===============================================
   # ********************************************************************************************************************
 
-  # ---- completeness_keep
-  updateSelectizeInput(
-      session,
-      'completeness_keep',
-      choices = c("NULL"), #, names(Phen)),
-      server = TRUE
-  )
+  # # ---- completeness_keep
+  # updateSelectizeInput(
+  #     session,
+  #     'completeness_keep',
+  #     choices = "NULL", #, names(Phen)),
+  #     server = TRUE
+  # )
 
-  # ---- completeness_by ---------------------------------------------------------
-  updateSelectizeInput(
-      session,
-      'completeness_by',
-      choices = NULL, # names(raw.ped),
-      server = TRUE
-  )
+  # # ---- completeness_by ---------------------------------------------------------
+  # updateSelectizeInput(
+  #     session,
+  #     'completeness_by',
+  #     choices = NULL, # names(raw.ped),
+  #     server = TRUE
+  # )
 
   # ---- enable/disable pedigree completeness slider ---------------------------------
   observeEvent(input$completeness_keep, {

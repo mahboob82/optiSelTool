@@ -11,24 +11,24 @@
   #     server = TRUE
   # )
   #
-
-  # ----
-  updateSelectizeInput(
-    session,
-    'pedkin_keeponly',
-    #choices = c(colnames(Phen)),
-    choices = c(),
-    server = TRUE
-  )
-
-  # ----
-  updateSelectizeInput(
-    session,
-    'pedkin_keep',
-    #choices = c("NULL", colnames(raw.ped)),
-    choices = c("NULL"),
-    server = TRUE
-  )
+# 
+#   # ----
+#   updateSelectizeInput(
+#     session,
+#     'pedkin_keeponly',
+#     #choices = c(colnames(Phen)),
+#     choices = c(),
+#     server = TRUE
+#   )
+# 
+#   # ----
+#   updateSelectizeInput(
+#     session,
+#     'pedkin_keep',
+#     #choices = c("NULL", colnames(raw.ped)),
+#     choices = c("NULL"),
+#     server = TRUE
+#   )
 
   # ----
   updateSelectizeInput(

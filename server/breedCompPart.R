@@ -4,15 +4,15 @@
   # ********************************************************************************************************************
 
 
-  # ---- pedbreedcomp-breed
-  updateSelectizeInput(
-    session,
-    'pedbreedcomp_breed',
-    choices = NULL,
-    #selected = selected_breed,
-    # selected="Hinterwaelder",
-    server = TRUE
-  )
+  # # ---- pedbreedcomp-breed
+  # updateSelectizeInput(
+  #   session,
+  #   'pedbreedcomp_breed',
+  #   choices = NULL,
+  #   #selected = selected_breed,
+  #   # selected="Hinterwaelder",
+  #   server = TRUE
+  # )
 
   #---- pedbreedcomp_btn events --------------------------------------------------------------------
   observeEvent(input$btn_pedbreedcomp, {

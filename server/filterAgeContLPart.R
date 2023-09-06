@@ -5,14 +5,14 @@
   # ====================================================================================================================
 
 
-  # ---- filter-breed --------------------------------------------------------------------------------
-  updateSelectizeInput(
-      session,
-      'filter_breed',
-      choices = "NULL",
-      #selected="Hinterwaelder",     #selected = selected_breed,
-      server = TRUE
-  )
+  # # ---- filter-breed --------------------------------------------------------------------------------
+  # updateSelectizeInput(
+  #     session,
+  #     'filter_agecontrib_breed',
+  #     choices = "NULL",
+  #     #selected="Hinterwaelder",     #selected = selected_breed,
+  #     server = TRUE
+  # )
 
   # --------------------------------------------------------------------------------
   observeEvent(input$btn_filter_age_contribution,  {
@@ -39,11 +39,11 @@
       PhenUpdated <- rv[[2]]
       AgeContrib <<- rv[[3]]
       GenInt <<- rv[4]
-      PhenCopy <<- PhenUpdated
+      Phen <<- PhenUpdated
 
 
       output$AgeContrib = renderDT15(AgeContrib, 12)
-      output$Phen = renderDT15(PhenUpdated, 12)
+      output$Phen = renderDT15(Phen, 12)
       
 
 

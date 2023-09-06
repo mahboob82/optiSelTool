@@ -87,8 +87,8 @@ btn_completeness_onclick <- function(df, refdf, keep,maxd,by ){
      maxd=maxd,
      by=by)
 
-  print(head(compl))
-  print(dim(compl))
+  #print(head(compl))
+  #print(dim(compl))
   # # validate
   # # taildf = tail(Pedig[-1])
   # # print(taildf)

@@ -6,13 +6,24 @@
   PedigData <- reactiveVal(NULL)
   
   # ---- preped_keep choices ------------------------------------------------------------------
-  updateSelectizeInput(
-    session,
-    'preped_keep',
-    #choices = c("NULL", names(raw.ped)),
-    choices = c("NULL"),
-    server = TRUE
-  )
+  # updateSelectizeInput(
+  #   session,
+  #   'preped_keep',
+  #   #choices = c("NULL", names(raw.ped)),
+  #   choices = "NULL",
+  #   server = TRUE
+  # )
+
+  # # ---- preped-breed choices ----------------------------------------------------------------------------
+  # updateSelectizeInput(
+  #     session,
+  #     'preped_breed',
+  #     # choices = c("NA", breeds),
+  #     # selected="Hinterwaelder",
+  #     choices = c("NA"),
+  #     server = TRUE
+  # )
+
 
   #---- enable/disable pedigree keep slider ---------------------------------------------------------------------
   observeEvent(input$preped_keep, {
@@ -35,17 +46,6 @@
   })
   
   
-  # ---- preped-breed choices ----------------------------------------------------------------------------
-  updateSelectizeInput(
-      session,
-      'preped_breed',
-      # choices = c("NA", breeds),
-      # selected="Hinterwaelder",
-      choices = c("NA"),
-      server = TRUE
-  )
-
-
   # ---- BUTTON event ----------------------------------------------------------------------------
   observeEvent(
     input$btn_preped,

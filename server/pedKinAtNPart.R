@@ -2,30 +2,30 @@
 
   # ===NATIVE KINSHIP/NATIVE IBD ================================================================================================
 
-  # ----
-  updateSelectizeInput(
-    session,
-    'pedKinatN_breed',
-    choices = NULL,
-    server = TRUE
-  )
-
-  # ----
-  updateSelectizeInput(
-    session,
-    'pedKinatN_keeponly',
-    choices =  NULL,
-    server = TRUE
-  )
-
-  # ----
-  updateSelectizeInput(
-    session,
-    'pedKinatN_keep',
-    # choices = c("NULL", colnames(raw.ped)),
-    choices = "NULL",
-    server = TRUE
-  )
+  # # ----
+  # updateSelectizeInput(
+  #   session,
+  #   'pedKinatN_breed',
+  #   choices = NULL,
+  #   server = TRUE
+  # )
+  # 
+  # # ----
+  # updateSelectizeInput(
+  #   session,
+  #   'pedKinatN_keeponly',
+  #   choices =  NULL,
+  #   server = TRUE
+  # )
+  # 
+  # # ----
+  # updateSelectizeInput(
+  #   session,
+  #   'pedKinatN_keep',
+  #   # choices = c("NULL", colnames(raw.ped)),
+  #   choices = "NULL",
+  #   server = TRUE
+  # )
 
 
  # -----
@@ -61,9 +61,9 @@
     PkinatN <<- rv[[2]]
 
     PkinatN$of <<- PkinatN$Q1/PkinatN$Q2
-    PkinatNCopyRender <<-PkinatN$of
+    PkinatNof <<-PkinatN$of
     #
-    output$PkinatN = renderDT15_PkinatN_dblClick(PkinatN$of, 12)
+    output$PkinatN = renderDT15_PkinatN_dblClick(PkinatNof, 12)
   })
 
 
@@ -86,8 +86,8 @@
     #          input$PkinatN_dt_dblclick$dt_len) )
 
 
-    columns = colnames(PkinatNCopyRender)
-    rows = rownames(PkinatNCopyRender)
+    columns = colnames(PkinatNof)
+    rows = rownames(PkinatNof)
     animal1 = rows[r+p*l]
     animal2 = columns[c]
     if (length(animal2)==0)
@@ -103,7 +103,7 @@
     # datatmp = Pedig[c("276000891862786", "276000812497659"),cols]
     # vectortmp = PkinatN$of["276000891862786","276000812497659"]
     datatmp = Pedig[c(animal1, animal2),cols]
-    vectortmp = PkinatN$of[animal1,animal2]
+    vectortmp = PkinatNof[animal1,animal2]
     if (length(vectortmp)>1)
       vectortmp= vectortmp[-(r+p*l)]
       vectortmp = paste(round(mean(vectortmp),5), "  [avg.]")
@@ -111,6 +111,7 @@
     #
     output$PkinatNwithNC <- renderDT(datatmp)
     output$NativeKinship <- renderText(vectortmp)
+    
     #output$NativeKinship = renderDT(vectortmp)
-
+    
   })

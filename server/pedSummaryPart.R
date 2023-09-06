@@ -4,12 +4,12 @@
   # ********************************************************************************************************************
 
   # ---- pedsummary_keep_only--------------------------------------------------------------------
-  updateSelectizeInput(
-      session,
-      'pedsummary_keep_only',
-      choices = c("NULL"),
-      server = TRUE
-  )
+  # updateSelectizeInput(
+  #     session,
+  #     'pedsummary_keep_only',
+  #     choices = "NULL",
+  #     server = TRUE
+  # )
 
   # ---- enable/disable pedigree summary slider --------------------------------------------
   observeEvent(input$pedsummary_keep_only, {
