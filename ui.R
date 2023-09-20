@@ -10,9 +10,12 @@ ui_stepstab_bottom = source("ui/ui_stepstab_bottom.R", local=TRUE)
 
 ui_tables_Rawped_to_PkinatN = source("ui/ui_tables_Rawped_to_PkinatN.R", local=TRUE)
 ui_figures = source("ui/ui_figures.R")
+ui_breedplanA = source("ui/ui_breedplanA.R")
+ui_breedplanB = source("ui/ui_breedplanB.R")
+ui_breedplanC = source("ui/ui_breedplanC.R")
 
 
-# UI SCRIPT
+# Import images from directory
 
 
 #--------------HEADER SECTION-------------------------------------------------------------------------------------------
@@ -103,16 +106,16 @@ appBody <- dashboardBody(
         type = "tabs",
         tabPanel(
           "Plan A",
-          h2("UI for plan A")
+          ui_breedplanA$value
         ),
 
         tabPanel(
           "Plan B",
-          h2("UI for plan B")
+          ui_breedplanB$value
         ),
         tabPanel(
           "Plan C",
-          h2("UI for plan C")
+         ui_breedplanC$value
         )
 
       )

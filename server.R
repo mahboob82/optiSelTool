@@ -21,6 +21,8 @@ source('server/error_and_logsPart.R', local=TRUE)
 source('server/renderTablesPart.R', local=TRUE)
 
 
+
+
 # Declare some global intermediate dataframes for future references 
 # <<- assignment meaning assignment is a global declaration
 Pedig      <<- data.frame()
@@ -80,11 +82,16 @@ server <- function(input, output, session) {
   ##-----------------
   source("manualUpload.R", local=TRUE)
 
+  
+  
+  ################################################
   ## Auto upload gui
   ##-----------------
-  # source("autoUpload.R", local=TRUE)
-  # auto_upload_pedigree()
-  # auto_upload_phen()
+  source("autoUpload.R", local=TRUE)
+  auto_upload_pedigree()
+  auto_upload_phen()
+  ###############################################
+  
   
   
   # ********************************************************************************************************************
@@ -202,5 +209,9 @@ server <- function(input, output, session) {
   })
   ############################################################################################################
 
+  
+  # IMPORT breedplan rendering codes
+  source('server/breedpanAPart.R', local=TRUE)
+  
   
 }
